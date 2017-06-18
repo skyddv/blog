@@ -24,21 +24,21 @@ class Catalog(db.Model):
     user = Column(INTEGER, ForeignKey('user.id'), nullable=False)
     name = Column(String(45), nullable=False)
 
-
 class Post(db.Model):
     __tablename__ = 'post'
 
     id = Column(INTEGER, primary_key=True, autoincrement=True)
-    catalog = Column(INTEGER, ForeignKey('catalog.id'), nullable=False)
+    title = Column(String(192), nullable=False, default='Sky')
     author = Column(INTEGER, ForeignKey('user.id'), nullable=False)
-    post_time = Column(DateTime, nullable=False)
-    title = Column(String(192), nullable=False)
-    read_count = Column(INTEGER, nullable=False)
+    catalog = Column(INTEGER, ForeignKey('catalog.id'), nullable=False)
+    timestamp = Column(DateTime, nullable=False)
     status = Column(INTEGER, nullable=False, default=0)
+    read_count = Column(INTEGER, nullable=False, default=0)
+    image = Column(String(192), nullable=True)
 
     author2 = relationship('User', foreign_keys=[author])
     catalog2 = relationship('Catalog', foreign_keys=[catalog])
-    content = relationship('PostContent', foreign_keys='[PostContent.id]')
+    content = relationship('PostContent', foreign_keys='[PostContent.id]', uselist=False)
 
 
 class PostContent(db.Model):
