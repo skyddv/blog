@@ -9,6 +9,9 @@ import createLogger from 'redux-logger';
 import fetchMiddleware from './middleware/fetch';
 import rootReducer from './reducers';
 
+
+// console.log(fetchMiddleware);
+
 const store = compose(
     applyMiddleware(thunkMiddleware),
     applyMiddleware(fetchMiddleware),

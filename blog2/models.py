@@ -73,7 +73,7 @@ class Comment(db.Model):
     timestamp = Column(DateTime, index=True, nullable=False)
 
     user2 = relationship('User', foreign_keys=[user])
-    ref2 = relationship('Comment', foreign_keys=[ref])
+    ref2 = relationship('Comment', foreign_keys=[ref], uselist=True)
 
 
 

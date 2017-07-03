@@ -7,7 +7,7 @@ var webpack = require('webpack');
 module.exports = {
     entry: [
         'react-hot-loader/patch',
-        'webpack-dev-server/client?http://192.168.253.25:3000',
+        'webpack-dev-server/client?http://127.0.0.1:3000',
         'webpack/hot/dev-server',
         './app/index'
     ],
@@ -34,6 +34,10 @@ module.exports = {
             {
                 test: /\.(jpe?g|gif|png|svg)$/i,
                 loaders: ['file']
+            },
+            {
+                test: /\.css$/,
+                loaders: 'style'
             }
         ]
     }

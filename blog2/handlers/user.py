@@ -9,7 +9,7 @@ import jwt, bcrypt
 import datetime
 
 
-router = Router(prefix='/user')
+router = Router(prefix='/api')
 
 
 @router.route(r'/register', methods=['POST'])
@@ -43,7 +43,7 @@ def register(ctx, request):
 def login(ctx, request):
     try:
         payload = request.json()
-        mail = payload['email']
+        mail = payload['mail']
         password = payload['password']
     except Exception as e:
         raise HTTPBadRequest(e)
@@ -52,6 +52,6 @@ def login(ctx, request):
     if bcrypt.hashpw(password.encode(), user.password.encode()) == user.password.encode():
         key = ctx.config.get_string('auth.key')
         exp = datetime.datetime.utcnow() + datetime.timedelta(hours=ctx.config.get_int('auth.exp'))
-        token = jwt.encode({'user':user.id, 'exp':exp}, key, 'HS512').decode()
+        token = jwt.encode({'user': user.id, 'exp': exp}, key, 'HS512').decode()
         return jsonify(code=200, token=token)
     raise HTTPUnauthorized()

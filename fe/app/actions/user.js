@@ -8,7 +8,7 @@ export function login(mail, password) {
     return dispatch => dispatch({
         [PAYLOAD]: {
             types: LOGIN_TYPES,
-            endpoint: '/api/user/login',
+            endpoint: '/api/login',
             options: {method: 'POST', body: JSON.stringify({mail, password})}
         }
     })

@@ -16,7 +16,6 @@ img_re = re.compile(r'''!\[(.*)\]\((.*)\)''')
 def update_post(request, status=0):
     try:
         payload = request.json()
-        print(payload)
         post_id = payload.get('post')
         content = payload.get('content')
         title = payload.get('title')
@@ -89,7 +88,7 @@ def publish(ctx, request):
 @Require()
 def edit(ctx, request):
     post = Post.query.filter(Post.id == request.args['id']).first_or_404()
-    if post.author_id != request.principal.id:
+    if post.author != request.principal.id:
         raise exc.HTTPForbidden('it is not your post')
     post.status = 0
     db.session.add(post)
@@ -106,7 +105,7 @@ def edit(ctx, request):
 def get(ctx, request):
     post = Post.query.filter(Post.id == request.args['id']).first_or_404()
     if post.status != 1:
-        if request.principal is None or request.principal.id != post.author.id:
+        if request.principal is None or request.principal.id != post.author:
             raise exc.HTTPNotFound('post not exist or deleted')
     return jsonify(code=200, post=post.dictify(exclude={'author.password', 'author.catalogs'}))
 
@@ -131,7 +130,7 @@ def get_by_user(ctx, request):
 def get_by_catalog(ctx, request):
     page = request.params.get('page', 1)
     size = request.params.get('size', 50)
-    posts = Post.query.filter(Post.status == 1).filter(Post.catalog_id == request.args['id']).paginate(page, size)
+    posts = Post.query.filter(Post.status == 1).filter(Post.catalog == request.args['id']).paginate(page, size)
     return jsonify(code=200, posts=posts.dictify(exclude={'author.password', 'author.catalogs'}))
 
 

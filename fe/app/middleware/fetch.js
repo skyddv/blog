@@ -32,6 +32,8 @@ export function cleanToken(token) {
 
 export default store => next => action => {
     const payload = action[PAYLOAD];
+    // console.log("vvvv  v", action);
+    // console.log(" x xxx",action[PAYLOAD]);
     if (payload === undefined) {
         next(action);
         return;
@@ -84,7 +86,8 @@ export default store => next => action => {
         return finalAction;
     };
     next(actionWith({type: types.get('request')}));
-    
+
+
     return fetch(url, options).then(res => {
         if (res.ok) {
             res.json().then(data => next(actionWith({res: post(data), type: types.get('success')})))
